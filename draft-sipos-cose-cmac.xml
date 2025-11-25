@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="info" consensus="true" docName="draft-sipos-cose-cmac-00" ipr="trust200902" submissionType="IETF" symRefs="true" tocInclude="true" version="3" xml:lang="en">
+  <front>
+    <title abbrev="COSE CMAC">AES-CMAC for COSE</title>
+    <seriesInfo name="Internet-Draft" value="draft-sipos-cose-cmac-00"/>
+    <author fullname="Brian Sipos" initials="B." surname="Sipos">
+      <organization abbrev="JHU/APL">The Johns Hopkins University Applied Physics Laboratory</organization>
+      <address>
+        <postal>
+          <street>11100 Johns Hopkins Rd.</street>
+          <city>Laurel</city>
+          <region>MD</region>
+          <code>20723</code>
+          <country>United States of America</country>
+        </postal>
+        <email>brian.sipos+ietf@gmail.com</email>
+      </address>
+    </author>
+    <date/>
+    <area>Security</area>
+    <workgroup>CBOR Object Signing and Encryption</workgroup>
+    <keyword>CMAC</keyword>
+    <abstract>
+      <t>
+This document registers COSE algorithm code points for using the Advanced Encryption Standard (AES) in Cipher-based Message Authentication Code (CMAC) mode for use in COSE MAC messages.
+The CMAC mode of operation is an alternative to AES-CBC-MAC which is approved by US NIST FIPS 140.
+      </t>
+    </abstract>
+  </front>
+  <middle>
+    <section>
+      <name>Introduction</name>
+      <t>
+The base COSE specification <xref target="RFC9052"/> defines a container for Message Authentication Code (MAC) parameters and results.
+This container is parameterized on an algorithm identifier used to verify the MAC result.
+This document defines new fully specified algorithm identifiers for the use of Advanced Encryption Standard (AES) in Cipher-based Message Authentication Code (CMAC) mode to generate an authentication tag as defined by US NIST <xref target="NIST-SP800-38B"/>.
+      </t>
+      <t>
+These COSE algorithm identifiers are "fully specified" meaning they rely on no extra parameters (<em>e.g.</em>, key length or tag length) to determine their exact operation.
+The COSE algorithm code point along with the shared secret key is suffient to generate or verify the MAC tag.
+      </t>
+      <t>
+The use of CMAC is an alternative to the Hash-based Message Authentication Code (HMAC) family of algorithms which relies exclusively on a block cipher instead of a cryptographic hash function.
+For some implementations, cipher-based MAC can enable the use of hardware acceleration of its processing.
+The CMAC mode of AES is approved by US NIST FIPS 140 <xref target="NIST-FIPS-140"/>.
+      </t>
+      <section>
+        <name>Scope</name>
+        <t>
+This document does not define any new algorithms it only defines code points in a COSE registry so that the AES-CMAC can be used in that security environment with fully specified combinations of parameters.
+        </t>
+        <t>
+To avoid confusion, the AES-CMAC algorithm family specified in this document is distinct from the "AES-MAC" (also known as "AES-CBC-MAC") algorithm family from <xref section="3.2" target="RFC9053"/>.
+That algorithm family is not approved by FIPS 140.
+      </t>
+      </section>
+      <section>
+        <name>Terminology</name>
+        <t>
+The key words "<bcp14>MUST</bcp14>", "<bcp14>MUST NOT</bcp14>", "<bcp14>REQUIRED</bcp14>", "<bcp14>SHALL</bcp14>", "<bcp14>SHALL NOT</bcp14>", "<bcp14>SHOULD</bcp14>", "<bcp14>SHOULD NOT</bcp14>", "<bcp14>RECOMMENDED</bcp14>", "<bcp14>NOT RECOMMENDED</bcp14>", "<bcp14>MAY</bcp14>", and "<bcp14>OPTIONAL</bcp14>" in this document are to be interpreted as described in BCP 14 <xref target="RFC2119"/> <xref target="RFC8174"/> when, and only when, they appear in all capitals, as shown here.
+        </t>
+      </section>
+    </section>
+    <section anchor="sec-algo-cmac">
+      <name>The AES-CMAC Family</name>
+      <t>
+While the CMAC mode <xref target="NIST-SP800-38B"/> can be used with any underlying encryption block cipher, this document focuses on its use with the AES cipher referred to as AES-CMAC.
+      </t>
+      <t>
+For the sake of adhering to COSE best practice about fully specifying what gets assigned a COSE "algorithm" code point, AES-CMAC will be treated as an <em>algorithm family</em> with a single code point referring to the algorithm itself along with a specific set of parameter values.
+The parameters associated with AES-CMAC are: key length and tag length.
+      </t>
+      <t>
+This document restricts the allocated code points to the commonly used key lengths of 128 and 256 bits and restricts the use of a single tag length of 128 bits, which happens to be the longest possible tag length, as indicated in <xref target="tab-fam-aescmac"/>.
+These tag lengths are consistent with the COSE use of AES-CBC-MAC in <xref section="3.2" target="RFC9053"/>.
+Future allocations can define the use of AES-CMAC with shortened tag lengths.
+      </t>
+      <table anchor="tab-fam-aescmac">
+        <name>Registered AES-CMAC combinations</name>
+        <thead>
+          <tr>
+            <th>COSE Value</th>
+            <th>Algorithm</th>
+            <th>Key Length</th>
+            <th>Tag Length</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <cref>TBA1</cref>
+            </td>
+            <td>AES-CMAC</td>
+            <td>128</td>
+            <td>128</td>
+          </tr>
+          <tr>
+            <td>
+              <cref>TBA3</cref>
+            </td>
+            <td>AES-CMAC</td>
+            <td>256</td>
+            <td>128</td>
+          </tr>
+        </tbody>
+      </table>
+      <t>
+When using a COSE key for these algorithms, the following checks are made:
+      </t>
+      <ul>
+        <li>The "kty" field <bcp14>MUST</bcp14> be present with a value of "Symmetric".</li>
+        <li>The "k" field <bcp14>MUST</bcp14> match the key length for the algorithm being used.</li>
+        <li>If the "alg" field is present, it <bcp14>MUST</bcp14> match the algorithm being used.</li>
+        <li>If the "key_ops" field is present, it <bcp14>MUST</bcp14> include "MAC create" when creating an authentication tag.</li>
+        <li>If the "key_ops" field is present, it <bcp14>MUST</bcp14> include "MAC verify" when verifying an authentication tag.</li>
+      </ul>
+    </section>
+    <section>
+      <name>Security Considerations</name>
+      <t>
+This document does not define any new behavior of the AES-CMAC family, and so does not introduce any new security considerations.
+All of the applicable considerations from NIST <xref target="NIST-SP800-38B"/> apply when the algorithm is used in COSE.
+      </t>
+    </section>
+    <section anchor="sec-iana">
+      <name>IANA Considerations</name>
+      <t>
+This section provides guidance to the Internet Assigned Numbers Authority (IANA) regarding registration of code points in accordance with BCP 26 <xref target="RFC1155"/>.
+      </t>
+      <section anchor="sec-iana-cose">
+        <name>COSE Algorithms</name>
+        <t>
+A new set of entries have been added to the "COSE Algorithms" registry <xref target="IANA-COSE"/> with the following parameters.
+        </t>
+        <dl newline="false">
+          <dt>Name:</dt>
+          <dd>AES-CMAC 128/128</dd>
+          <dt>Value:</dt>
+          <dd>
+            <cref>TBA1</cref>
+          </dd>
+          <dt>Description:</dt>
+          <dd>AES-CMAC with 128-bit key and 128-bit tag</dd>
+          <dt>Capabilities:</dt>
+          <dd>[kty]</dd>
+          <dt>Change controller:</dt>
+          <dd>IETF</dd>
+          <dt>Reference:</dt>
+          <dd>[This document]</dd>
+          <dt>Recommended:</dt>
+          <dd>Yes</dd>
+        </dl>
+        <dl newline="false">
+          <dt>Name:</dt>
+          <dd>AES-CMAC 256/128</dd>
+          <dt>Value:</dt>
+          <dd>
+            <cref>TBA3</cref>
+          </dd>
+          <dt>Description:</dt>
+          <dd>AES-CMAC with 256-bit key and 128-bit tag</dd>
+          <dt>Capabilities:</dt>
+          <dd>[kty]</dd>
+          <dt>Change controller:</dt>
+          <dd>IETF</dd>
+          <dt>Reference:</dt>
+          <dd>[This document]</dd>
+          <dt>Recommended:</dt>
+          <dd>Yes</dd>
+        </dl>
+        <section removeInRFC="true">
+          <name>Requested Code Points</name>
+          <t>
+The reqested COSE algorithm code points are in the positive less-than-256 range.
+          </t>
+        </section>
+      </section>
+    </section>
+  </middle>
+  <back>
+    <displayreference target="NIST-FIPS-140" to="FIPS-140"/>
+    <displayreference target="NIST-SP800-38B" to="SP800-38B"/>
+    <references>
+      <name>References</name>
+      <references>
+        <name>Normative References</name>
+        <reference anchor="IANA-COSE" target="https://www.iana.org/assignments/cose/">
+          <front>
+            <title>CBOR Object Signing and Encryption (COSE)</title>
+            <author>
+              <organization>IANA</organization>
+            </author>
+            <date/>
+          </front>
+        </reference>
+        <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml"/>
+        <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8174.xml"/>
+        <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.9052.xml"/>
+        <reference anchor="NIST-SP800-38B" target="https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-38b.pdf">
+          <front>
+            <title>Recommendation for Block Cipher Modes of Operation: The CMAC Mode for Authentication</title>
+            <seriesInfo name="NIST SP" value="800-38B"/>
+            <author>
+              <organization>US National Institute of Standards and Technology</organization>
+            </author>
+            <date month="May" year="2005"/>
+          </front>
+        </reference>
+      </references>
+      <references>
+        <name>Informative References</name>
+        <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.1155.xml"/>
+        <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.9053.xml"/>
+        <reference anchor="NIST-FIPS-140" target="https://doi.org/10.6028/NIST.FIPS.140-3">
+          <front>
+            <title>Security Requirements for Cryptographic Modules</title>
+            <seriesInfo name="FIPS" value="140-3"/>
+            <author>
+              <organization>US National Institute of Standards and Technology</organization>
+            </author>
+            <date month="March" year="2019"/>
+          </front>
+        </reference>
+      </references>
+    </references>
+  </back>
+</rfc>
