@@ -125,7 +125,7 @@ All of the applicable considerations from NIST <xref target="NIST-SP800-38B"/> a
     <section anchor="sec-iana">
       <name>IANA Considerations</name>
       <t>
-This section provides guidance to the Internet Assigned Numbers Authority (IANA) regarding registration of code points in accordance with BCP 26 <xref target="RFC1155"/>.
+This section provides guidance to the Internet Assigned Numbers Authority (IANA) regarding registration of code points in accordance with BCP 26 <xref target="RFC8126"/>.
       </t>
       <section anchor="sec-iana-cose">
         <name>COSE Algorithms</name>
@@ -209,7 +209,7 @@ The reqested COSE algorithm code points are in the positive less-than-256 range.
       </references>
       <references>
         <name>Informative References</name>
-        <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.1155.xml"/>
+        <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8126.xml"/>
         <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.9053.xml"/>
         <reference anchor="NIST-FIPS-140" target="https://doi.org/10.6028/NIST.FIPS.140-3">
           <front>
