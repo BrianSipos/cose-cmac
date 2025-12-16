@@ -22,7 +22,7 @@
     <keyword>CMAC</keyword>
     <abstract>
       <t>
-This document registers COSE algorithm code points for using the Advanced Encryption Standard (AES) in Cipher-based Message Authentication Code (CMAC) mode for use in COSE MAC messages.
+This document registers COSE algorithm code points for using the Advanced Encryption Standard (AES) in Cipher-based Message Authentication Code (CMAC) mode for use in CBOR Object Signing and Encryption (COSE) messages.
 The CMAC mode of operation is an alternative to AES-CBC-MAC which is approved by US NIST FIPS 140.
       </t>
     </abstract>
@@ -31,7 +31,7 @@ The CMAC mode of operation is an alternative to AES-CBC-MAC which is approved by
     <section>
       <name>Introduction</name>
       <t>
-The base COSE specification <xref target="RFC9052"/> defines a container for Message Authentication Code (MAC) parameters and results.
+The base CBOR Object Signing and Encryption (COSE) specification <xref target="RFC9052"/> defines a container for Message Authentication Code (MAC) parameters and results.
 This container is parameterized on an algorithm identifier used to verify the MAC result.
 This document defines new fully specified algorithm identifiers for the use of Advanced Encryption Standard (AES) in Cipher-based Message Authentication Code (CMAC) mode to generate an authentication tag as defined by US NIST <xref target="NIST-SP800-38B"/>.
       </t>
