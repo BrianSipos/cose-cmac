@@ -168,12 +168,9 @@ A new set of entries have been added to the "COSE Algorithms" registry <xref tar
           <dt>Recommended:</dt>
           <dd>Yes</dd>
         </dl>
-        <section removeInRFC="true">
-          <name>Requested Code Points</name>
-          <t>
-The reqested COSE algorithm code points are in the positive less-than-256 range.
-          </t>
-        </section>
+        <t><cref>
+Note to IANA: The reqested COSE algorithm code points are in the positive less-than-256 range.
+        </cref></t>
       </section>
     </section>
   </middle>
