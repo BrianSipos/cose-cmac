@@ -46,7 +46,6 @@ ty = [
 ]
 
 [tool.pytest.ini_options]
-testpaths="."
 log_cli="True"
 log_cli_level="info"
 

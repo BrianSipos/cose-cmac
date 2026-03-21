@@ -1,6 +1,6 @@
 
 from abc import ABC, abstractmethod
-import cbor2
+
 from cbor_diag import cbor2diag
 from typing import Type
 import unittest
@@ -30,7 +30,7 @@ class _CMAC(algorithms.CoseAlgorithm, ABC):
         raise NotImplementedError()
 
     @classmethod
-    def compute_tag(cls, key: 'SK', data: bytes) -> bytes:
+    def compute_tag(cls, key: 'SymmetricKey', data: bytes) -> bytes:
         if len(key.k) != cls.get_key_length():
             raise CoseInvalidKey
 
@@ -41,7 +41,7 @@ class _CMAC(algorithms.CoseAlgorithm, ABC):
         return full_tag[:cls.get_tag_length()]
 
     @classmethod
-    def verify_tag(cls, key: 'SK', tag: bytes, data: bytes) -> bool:
+    def verify_tag(cls, key: 'SymmetricKey', tag: bytes, data: bytes) -> bool:
 
         computed_tag = cls.compute_tag(key, data)
 
