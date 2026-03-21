@@ -1,3 +1,0 @@
-pycose @git+https://github.com/BrianSipos/pycose.git@133-sym-key-limits
-cryptography >=41.0
-cbor_diag
