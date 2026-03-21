@@ -23,7 +23,7 @@ dependencies = [
   "pycose @git+https://github.com/BrianSipos/pycose.git@133-sym-key-limits",
   "cryptography >=41.0",
   "cbor2",
-  "cbor_diag",
+  "cbor_diag ~=1.1",
 ]
 
 [project.optional-dependencies]
