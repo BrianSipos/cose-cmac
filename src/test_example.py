@@ -34,7 +34,8 @@ class _CMAC(algorithms.CoseAlgorithm, ABC):
         if len(key.k) != cls.get_key_length():
             raise CoseInvalidKey
 
-        h = CMAC(cls.cipher_cls()(key.k))
+        cipher: BlockCipherAlgorithm = cls.cipher_cls()
+        h = CMAC(cipher(key.k))
         h.update(data)
         full_tag = h.finalize()
 
