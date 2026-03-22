@@ -2,7 +2,6 @@
 from abc import ABC, abstractmethod
 
 from cbor_diag import cbor2diag
-from typing import Type
 import unittest
 from cryptography.hazmat.primitives.cmac import CMAC
 from cryptography.hazmat.primitives.ciphers.algorithms import AES, AES128, AES256
@@ -25,7 +24,7 @@ class _CMAC(algorithms.CoseAlgorithm, ABC):
 
     @classmethod
     @abstractmethod
-    def cipher_cls(cls) -> Type[AES]:
+    def cipher_cls(cls) -> type[AES]:
         raise NotImplementedError()
 
     @classmethod
@@ -33,8 +32,7 @@ class _CMAC(algorithms.CoseAlgorithm, ABC):
         if len(key.k) != cls.get_key_length():
             raise CoseInvalidKey
 
-        cipher_cls: Type = cls.cipher_cls()
-        h = CMAC(cipher_cls(key.k))
+        h = CMAC(cls.cipher_cls()(key.k))
         h.update(data)
         full_tag = h.finalize()
 
@@ -58,7 +56,7 @@ class AESCMAC128_128(_CMAC):
     fullname = "AES_CMAC_128_128"
 
     @classmethod
-    def cipher_cls(cls) -> Type[AES]:
+    def cipher_cls(cls) -> type[AES]:
         return AES128
 
     @classmethod
@@ -77,7 +75,7 @@ class AESCMAC256_128(_CMAC):
     fullname = "AES_CMAC_256_128"
 
     @classmethod
-    def cipher_cls(cls) -> Type[AES]:
+    def cipher_cls(cls) -> type[AES]:
         return AES256
 
     @classmethod
