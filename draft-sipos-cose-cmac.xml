@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="info" consensus="true" docName="draft-sipos-cose-cmac-00" ipr="trust200902" submissionType="IETF" sortRefs="true" symRefs="true" tocInclude="true" version="3" xml:lang="en">
+<rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="info" consensus="true" docName="draft-sipos-cose-cmac-01" ipr="trust200902" submissionType="IETF" sortRefs="true" symRefs="true" tocInclude="true" version="3" xml:lang="en">
   <front>
     <title abbrev="COSE AES-CMAC">AES-CMAC for COSE</title>
-    <seriesInfo name="Internet-Draft" value="draft-sipos-cose-cmac-00"/>
+    <seriesInfo name="Internet-Draft" value="draft-sipos-cose-cmac-01"/>
     <author fullname="Brian Sipos" initials="B." surname="Sipos">
       <organization abbrev="JHU/APL">The Johns Hopkins University Applied Physics Laboratory</organization>
       <address>
@@ -22,7 +22,8 @@
     <keyword>CMAC</keyword>
     <abstract>
       <t>
-This document registers COSE algorithm code points for using the Advanced Encryption Standard (AES) in Cipher-based Message Authentication Code (CMAC) mode within CBOR Object Signing and Encryption (COSE) messages.
+This document registers code points for using the Advanced Encryption Standard (AES) block cipher in Cipher-based Message Authentication Code (CMAC) mode within CBOR Object Signing and Encryption (COSE) messages.
+Specifically, these uses are for computing authentication tag values with no additional parameters.
       </t>
     </abstract>
   </front>
