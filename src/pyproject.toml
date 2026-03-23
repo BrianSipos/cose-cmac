@@ -29,6 +29,7 @@ dependencies = [
 test = [
   "cbor2",
   "pytest",
+  "pytest-subtests",
   "pytest-cov",
   "coverage",
 ]
