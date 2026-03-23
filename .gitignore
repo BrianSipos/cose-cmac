@@ -1,5 +1,6 @@
-build
+/build/
 
 *~
 .*project
 *.pyc
+.pytest_cache/
