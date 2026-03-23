@@ -1,0 +1,65 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ietf-cose-cmac-examples"
+version = "0.0.0"
+authors = [
+  { name="Brian Sipos", email="brian.sipos+ietf@gmail.com" },
+]
+description = "Examples of COSE messages with AES-CMAC algs"
+license = { text="LGPL-3" }
+requires-python = ">=3.10"
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Intended Audience :: Developers",
+  "Programming Language :: Python :: 3",
+  "Operating System :: OS Independent",
+  "Topic :: Software Development :: Libraries",
+]
+
+dependencies = [
+  "pycose @git+https://github.com/BrianSipos/pycose.git@133-sym-key-limits",
+  "cryptography >=41.0",
+  "cbor2",
+  "cbor_diag ~=1.1",
+]
+
+[project.optional-dependencies]
+test = [
+  "pytest",
+  "pytest-cov",
+  "coverage",
+]
+pylint = [
+  "pylint",
+  "pylint_junit",
+]
+flake8 = [
+  "flake8",
+  "flake8_pyproject",
+  "flake8_formatter_junit_xml",
+]
+ty = [
+  "ty",
+]
+
+[tool.pytest.ini_options]
+log_cli="True"
+log_cli_level="info"
+
+[tool.pylint.MAIN]
+load-plugins="pylint_junit"
+suggestion-mode="no"
+[tool.pylint.FORMAT]
+max-line-length=160
+[tool.pylint.DESIGN]
+min-public-methods=1
+
+[tool.flake8]
+max-line-length=160
+
+[project.urls]
+"Homepage" = "https://github.com/BrianSipos/cose-cmac"
+"Bug Tracker" = "https://github.com/BrianSipos/cose-cmac/issues"

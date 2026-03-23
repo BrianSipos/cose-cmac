@@ -1,0 +1,57 @@
+name: Example operations
+
+on: [push]
+
+permissions:
+  contents: read
+defaults:
+  run:
+    working-directory: src
+
+jobs:
+  format:
+    name: Check formatting
+    runs-on: ubuntu-24.04
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.12'
+    - name: Install
+      run: pip3 install .[flake8]
+    - name: Lint with flake8
+      run: flake8 . --count --statistics
+
+  typing:
+    name: Check typing
+    runs-on: ubuntu-24.04
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.12'
+    - name: Install
+      run: pip3 install .[ty]
+    - name: Check with ty
+      run: ty check --python ${Python3_ROOT_DIR} . || true
+
+  build:
+    name: Build and test
+    strategy:
+      max-parallel: 4
+      matrix:
+        python-version: ['3.10', '3.11', '3.12', '3.13']
+    runs-on: ubuntu-24.04
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install
+      run: pip3 install -e .[test]
+    - name: COSE examples
+      run: python3 -m pytest . --capture=no
+

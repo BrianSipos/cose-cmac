@@ -1,12 +1,10 @@
 
 from abc import ABC, abstractmethod
-import cbor2
+
 from cbor_diag import cbor2diag
-from typing import Type
 import unittest
 from cryptography.hazmat.primitives.cmac import CMAC
-from cryptography.hazmat.primitives.ciphers.algorithms import AES128, AES256
-from cryptography.hazmat.primitives.ciphers import BlockCipherAlgorithm
+from cryptography.hazmat.primitives.ciphers.algorithms import AES, AES128, AES256
 from pycose import headers, algorithms
 from pycose.keys import SymmetricKey, keyops, keyparam
 from pycose.messages import Mac0Message
@@ -26,11 +24,11 @@ class _CMAC(algorithms.CoseAlgorithm, ABC):
 
     @classmethod
     @abstractmethod
-    def cipher_cls(cls) -> Type[BlockCipherAlgorithm]:
+    def cipher_cls(cls) -> type[AES]:
         raise NotImplementedError()
 
     @classmethod
-    def compute_tag(cls, key: 'SK', data: bytes) -> bytes:
+    def compute_tag(cls, key: 'SymmetricKey', data: bytes) -> bytes:
         if len(key.k) != cls.get_key_length():
             raise CoseInvalidKey
 
@@ -41,7 +39,7 @@ class _CMAC(algorithms.CoseAlgorithm, ABC):
         return full_tag[:cls.get_tag_length()]
 
     @classmethod
-    def verify_tag(cls, key: 'SK', tag: bytes, data: bytes) -> bool:
+    def verify_tag(cls, key: 'SymmetricKey', tag: bytes, data: bytes) -> bool:
 
         computed_tag = cls.compute_tag(key, data)
 
@@ -58,7 +56,7 @@ class AESCMAC128_128(_CMAC):
     fullname = "AES_CMAC_128_128"
 
     @classmethod
-    def cipher_cls(cls) -> Type[BlockCipherAlgorithm]:
+    def cipher_cls(cls) -> type[AES]:
         return AES128
 
     @classmethod
@@ -77,7 +75,7 @@ class AESCMAC256_128(_CMAC):
     fullname = "AES_CMAC_256_128"
 
     @classmethod
-    def cipher_cls(cls) -> Type[BlockCipherAlgorithm]:
+    def cipher_cls(cls) -> type[AES]:
         return AES256
 
     @classmethod
