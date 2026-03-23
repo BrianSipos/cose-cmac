@@ -3,9 +3,11 @@ from abc import ABC, abstractmethod
 
 from cbor_diag import cbor2diag
 import logging
+from typing import Callable, Optional
 import unittest
 from cryptography.hazmat.primitives.cmac import CMAC
-from cryptography.hazmat.primitives.ciphers.algorithms import AES, AES128, AES256
+from cryptography.hazmat.primitives.ciphers import BlockCipherAlgorithm
+from cryptography.hazmat.primitives.ciphers.algorithms import AES128, AES256
 from pycose import headers, algorithms
 from pycose.keys import SymmetricKey, keyops, keyparam
 from pycose.messages import CoseMessage, Mac0Message
@@ -13,6 +15,10 @@ from pycose.exceptions import CoseException, CoseInvalidKey
 
 
 class _CMAC(algorithms.CoseAlgorithm, ABC):
+
+    cipher_cls: Optional[Callable[[bytes], BlockCipherAlgorithm]] = None
+    ''' Derived class overrides with block cipher constructor '''
+
     @classmethod
     @abstractmethod
     def get_key_length(cls) -> int:
@@ -24,16 +30,13 @@ class _CMAC(algorithms.CoseAlgorithm, ABC):
         raise NotImplementedError()
 
     @classmethod
-    @abstractmethod
-    def cipher_cls(cls) -> type[AES]:
-        raise NotImplementedError()
-
-    @classmethod
     def compute_tag(cls, key: 'SymmetricKey', data: bytes) -> bytes:
+        if cls.cipher_cls is None:
+            raise CoseException
         if len(key.k) != cls.get_key_length():
             raise CoseInvalidKey
 
-        h = CMAC(cls.cipher_cls()(key.k))
+        h = CMAC(cls.cipher_cls(key.k))
         h.update(data)
         full_tag = h.finalize()
 
@@ -56,9 +59,7 @@ class AESCMAC128_64(_CMAC):
     identifier = 252
     fullname = "AES_CMAC_128_64"
 
-    @classmethod
-    def cipher_cls(cls) -> type[AES]:
-        return AES128
+    cipher_cls = AES128
 
     @classmethod
     def get_key_length(cls) -> int:
@@ -75,9 +76,7 @@ class AESCMAC256_64(_CMAC):
     identifier = 253
     fullname = "AES_CMAC_256_64"
 
-    @classmethod
-    def cipher_cls(cls) -> type[AES]:
-        return AES256
+    cipher_cls = AES256
 
     @classmethod
     def get_key_length(cls) -> int:
@@ -94,9 +93,7 @@ class AESCMAC128_128(_CMAC):
     identifier = 254
     fullname = "AES_CMAC_128_128"
 
-    @classmethod
-    def cipher_cls(cls) -> type[AES]:
-        return AES128
+    cipher_cls = AES128
 
     @classmethod
     def get_key_length(cls) -> int:
@@ -113,9 +110,7 @@ class AESCMAC256_128(_CMAC):
     identifier = 255
     fullname = "AES_CMAC_256_128"
 
-    @classmethod
-    def cipher_cls(cls) -> type[AES]:
-        return AES256
+    cipher_cls = AES256
 
     @classmethod
     def get_key_length(cls) -> int:
