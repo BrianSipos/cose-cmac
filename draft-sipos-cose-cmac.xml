@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="info" consensus="true" docName="draft-sipos-cose-cmac-00" ipr="trust200902" submissionType="IETF" symRefs="true" tocInclude="true" version="3" xml:lang="en">
+<rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="info" consensus="true" docName="draft-sipos-cose-cmac-00" ipr="trust200902" submissionType="IETF" sortRefs="true" symRefs="true" tocInclude="true" version="3" xml:lang="en">
   <front>
     <title abbrev="COSE AES-CMAC">AES-CMAC for COSE</title>
     <seriesInfo name="Internet-Draft" value="draft-sipos-cose-cmac-00"/>
@@ -32,27 +32,29 @@ This document registers COSE algorithm code points for using the Advanced Encryp
       <t>
 The base CBOR Object Signing and Encryption (COSE) specification <xref target="RFC9052"/> defines two message types for Message Authentication Code (MAC) parameters and results: <tt>COSE_Mac</tt> and <tt>COSE_Mac0</tt>.
 These messages are parameterized on an algorithm identifier used to generate and verify the MAC tag.
-This document defines new fully specified COSE algorithm code points for the use of Advanced Encryption Standard (AES) in Cipher-based Message Authentication Code (CMAC) mode to compute an authentication tag as defined by US NIST <xref target="NIST-SP800-38B"/>.
+This document defines new fully specified COSE algorithm code points for the use of Advanced Encryption Standard (AES) block cipher <xref target="NIST-FIPS-197"/> in Cipher-based Message Authentication Code (CMAC) mode <xref target="NIST-SP800-38B"/> to compute a MAC tag.
       </t>
       <t>
 These COSE algorithm code points are "fully specified" in accordance with <xref target="RFC9864"/>, meaning they rely on no extra parameters to determine their exact operation.
 The COSE algorithm code point along with the shared secret key is sufficient to generate or verify the MAC tag.
       </t>
       <t>
-The use of CMAC is an alternative to the Hash-based Message Authentication Code (HMAC) family of algorithms registered by the base COSE specification <xref target="RFC9053"/>.
+The use of CMAC is an alternative to the Hash-based Message Authentication Code (HMAC) family of algorithms registered by the base COSE specification in <xref section="3.1" target="RFC9053"/>.
 CMAC relies exclusively on a block cipher instead of the HMAC use of a cryptographic hash function.
 For some implementations, cipher-based MAC can be hardware accelerated.
-The CMAC mode of AES is approved by US NIST FIPS 140 <xref target="NIST-FIPS-140"/>.
       </t>
       <t>
 To avoid confusion, the AES-CMAC algorithm family specified in this document is distinct from the "AES-MAC" (also known as "AES-CBC-MAC") algorithm family from <xref section="3.2" target="RFC9053"/>.
-That algorithm family is not approved by FIPS 140.
       </t>
       <section>
         <name>Scope</name>
         <t>
 This document does not define any new cryptographic algorithms or functions.
 It only defines code points in a COSE registry so that the AES-CMAC algorithm family can be used in COSE messages.
+        </t>
+        <t>
+This document does not address the use of CMAC for any other purposes than to compute a fixed-length MAC tag.
+These registered code points are not to be used as a pseudorandom function (PRF) or key-derivation function (KDF).
         </t>
       </section>
       <section>
@@ -141,7 +143,11 @@ When using a COSE key for these algorithms, the following checks are made:
       <name>Security Considerations</name>
       <t>
 This document does not define any new behavior of the AES-CMAC family, and so does not introduce any new security considerations.
-All of the applicable considerations from NIST <xref target="NIST-SP800-38B"/> apply when the algorithm is used in COSE.
+All of the applicable considerations from NIST <xref target="NIST-SP800-38B"/> apply when the algorithm family is used in COSE.
+      </t>
+      <t>
+The CMAC mode of AES is approved by US NIST FIPS 140 <xref target="NIST-FIPS-140"/>.
+The pre-existing uses of AES-CBC-MAC in COSE <xref target="RFC9053"/> are not approved by FIPS 140.
       </t>
     </section>
     <section anchor="sec-iana">
@@ -234,6 +240,7 @@ Note to IANA: The requested COSE algorithm code points are in the positive less-
   </middle>
   <back>
     <displayreference target="NIST-FIPS-140" to="FIPS-140"/>
+    <displayreference target="NIST-FIPS-197" to="FIPS-197"/>
     <displayreference target="NIST-SP800-38B" to="SP800-38B"/>
     <references>
       <name>References</name>
@@ -259,6 +266,16 @@ Note to IANA: The requested COSE algorithm code points are in the positive less-
               <organization>US National Institute of Standards and Technology</organization>
             </author>
             <date month="May" year="2005"/>
+          </front>
+        </reference>
+        <reference anchor="NIST-FIPS-197" target="http://csrc.nist.gov/publications/fips/fips197/fips-197.pdf">
+          <front>
+            <title>The Advanced Encryption Standard (AES)</title>
+            <seriesInfo name="FIPS" value="197"/>
+            <author>
+              <organization>US National Institute of Standards and Technology</organization>
+            </author>
+            <date day="26" month="November" year="2001"/>
           </front>
         </reference>
       </references>
