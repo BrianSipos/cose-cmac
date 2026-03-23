@@ -15,7 +15,11 @@ IANA
 IESG
 IETF
 jose
+KDF
 kty
 NIST
+pre
+PRF
+pseudorandom
 SHA
 TBD
