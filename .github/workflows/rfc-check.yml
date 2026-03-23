@@ -25,6 +25,8 @@ jobs:
           cmake -S . -B build -DCMAKE_INSTALL_DOCDIR=$PWD/build/install
           cmake --build build -v
           cmake --install build
+      - name: misspelling
+        run: if [ -s build/misspelling.txt ]; then cat build/misspelling.txt; exit 2; fi
       - uses: actions/upload-artifact@v4
         with:
           name: spec
