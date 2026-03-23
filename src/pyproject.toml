@@ -22,12 +22,12 @@ classifiers = [
 dependencies = [
   "pycose @git+https://github.com/BrianSipos/pycose.git@133-sym-key-limits",
   "cryptography >=41.0",
-  "cbor2",
-  "cbor_diag ~=1.1",
+  "cbor_diag ~=1.1 @git+https://github.com/chrysn/cbor-diag-py.git@typing",
 ]
 
 [project.optional-dependencies]
 test = [
+  "cbor2",
   "pytest",
   "pytest-cov",
   "coverage",
