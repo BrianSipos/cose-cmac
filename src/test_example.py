@@ -123,6 +123,7 @@ class AESCMAC256_128(_CMAC):
 
 LOGGER = logging.getLogger(__name__)
 
+
 class TestExample(unittest.TestCase):
 
     def test_CMAC128(self):
@@ -140,7 +141,7 @@ class TestExample(unittest.TestCase):
                     }
                 )
                 LOGGER.info('Key: %s', cbor2diag(key.encode()))
-        
+
                 msg_obj = Mac0Message(
                     phdr={
                         headers.Algorithm: key.alg,
@@ -153,12 +154,12 @@ class TestExample(unittest.TestCase):
                     external_aad=b'',
                 )
                 msg_obj.key = key
-        
+
                 # COSE internal structure
                 cose_struct_enc = msg_obj._mac_structure
                 LOGGER.info('COSE Structure: %s', cbor2diag(cose_struct_enc))
                 LOGGER.info('Encoded: %s', cose_struct_enc.hex())
-        
+
                 # Encoded message
                 message_enc = msg_obj.encode(tag=True)
                 LOGGER.info('Message: %s', cbor2diag(message_enc))
@@ -179,7 +180,8 @@ class TestExample(unittest.TestCase):
                 # Augmented from RFC 9172 example
                 # https://github.com/cose-wg/Examples/blob/master/cbc-mac-examples/cbc-mac-04.json
                 key = SymmetricKey(
-                    k=bytes.fromhex('849B57219DAE48DE646D07DBB533566E976686457C1491BE3A76DCEA6C427188'),
+                    k=bytes.fromhex(
+                        '849B57219DAE48DE646D07DBB533566E976686457C1491BE3A76DCEA6C427188'),
                     optional_params={
                         keyparam.KpKid: b'secret256',
                         keyparam.KpAlg: alg,
@@ -187,7 +189,7 @@ class TestExample(unittest.TestCase):
                     }
                 )
                 LOGGER.info('Key: %s', cbor2diag(key.encode()))
-        
+
                 msg_obj = Mac0Message(
                     phdr={
                         headers.Algorithm: key.alg,
@@ -200,12 +202,12 @@ class TestExample(unittest.TestCase):
                     external_aad=b'',
                 )
                 msg_obj.key = key
-        
+
                 # COSE internal structure
                 cose_struct_enc = msg_obj._mac_structure
                 LOGGER.info('COSE Structure: %s', cbor2diag(cose_struct_enc))
                 LOGGER.info('Encoded: %s', cose_struct_enc.hex())
-        
+
                 # Encoded message
                 message_enc = msg_obj.encode(tag=True)
                 LOGGER.info('Message: %s', cbor2diag(message_enc))
