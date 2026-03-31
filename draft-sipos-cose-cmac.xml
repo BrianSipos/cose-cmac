@@ -77,9 +77,9 @@ For the sake of adhering to COSE best practice <xref target="RFC9864"/> about fu
 The parameters associated with AES-CMAC family are: key length and tag length.
       </t>
       <t>
-This document registers code points for the commonly used key lengths of 128 and 256 bits and tag lengths of 128 and 64 bits.
-The 128-bit tag happens to be the longest possible tag length while the 64-bit tag is a truncated form.
-These tag lengths are consistent with the COSE use of AES-CBC-MAC in <xref section="3.2" target="RFC9053"/>.
+This document registers code points for the commonly used key lengths of 128 and 256 bits and tag lengths of 96 and 128 bits.
+The 128-bit tag happens to be the longest possible tag length while the 96-bit tag is a truncated form.
+These tag lengths are consistent with the use cases for single-use keys and limited-use keys (see <xref target="sec-security-overuse"/>) and with the use of AES-CMAC in IPsec <xref target="RFC4494"/>.
       </t>
       <table anchor="tab-fam-aescmac">
         <name>Registered algorithm code points</name>
@@ -94,22 +94,22 @@ These tag lengths are consistent with the COSE use of AES-CBC-MAC in <xref secti
         </thead>
         <tbody>
           <tr>
-            <td>AES-CMAC 128/64</td>
+            <td>AES-CMAC 128/96</td>
             <td>
               <cref>TBA1</cref>
             </td>
             <td>AES-CMAC</td>
             <td>128</td>
-            <td>64</td>
+            <td>96</td>
           </tr>
           <tr>
-            <td>AES-CMAC 256/64</td>
+            <td>AES-CMAC 256/96</td>
             <td>
               <cref>TBA2</cref>
             </td>
             <td>AES-CMAC</td>
             <td>256</td>
-            <td>64</td>
+            <td>96</td>
           </tr>
           <tr>
             <td>AES-CMAC 128/128</td>
@@ -142,7 +142,7 @@ When using a COSE key for these algorithms, the following checks are made:
         <li>If the "key_ops" field is present, it <bcp14>MUST</bcp14> include "MAC verify" when verifying an authentication tag.</li>
       </ul>
     </section>
-    <section>
+    <section anchor="sec-security">
       <name>Security Considerations</name>
       <t>
 This document does not define any new behavior of the AES-CMAC family, so all of the applicable considerations of AES <xref target="NIST-FIPS-197"/> and CMAC <xref target="NIST-SP800-38B"/> apply when the algorithm family is used in COSE.
@@ -151,7 +151,7 @@ This document does not define any new behavior of the AES-CMAC family, so all of
 The CMAC mode of AES is approved by US NIST FIPS 140 <xref target="NIST-FIPS-140"/>.
 The pre-existing uses of AES-CBC-MAC in COSE <xref target="RFC9053"/> are not approved by FIPS 140.
       </t>
-      <section>
+      <section anchor="sec-security-overuse">
         <name>Key Overuse Limit</name>
         <t>
 From analysis of Appendix B of <xref target="NIST-SP800-38B"/> performed in 2024 <xref target="Ericsson"/>, an "effective tag length" in bits can be computed for the 128-bit AES block length as
@@ -183,13 +183,13 @@ A new set of entries have been added to the "COSE Algorithms" registry <xref tar
         </t>
         <dl newline="false">
           <dt>Name:</dt>
-          <dd>AES-CMAC 128/64</dd>
+          <dd>AES-CMAC 128/96</dd>
           <dt>Value:</dt>
           <dd>
             <cref>TBA1</cref>
           </dd>
           <dt>Description:</dt>
-          <dd>AES-CMAC with 128-bit key and 64-bit tag</dd>
+          <dd>AES-CMAC with 128-bit key and 96-bit tag</dd>
           <dt>Capabilities:</dt>
           <dd>[kty]</dd>
           <dt>Change controller:</dt>
@@ -201,13 +201,13 @@ A new set of entries have been added to the "COSE Algorithms" registry <xref tar
         </dl>
         <dl newline="false">
           <dt>Name:</dt>
-          <dd>AES-CMAC 256/64</dd>
+          <dd>AES-CMAC 256/96</dd>
           <dt>Value:</dt>
           <dd>
             <cref>TBA2</cref>
           </dd>
           <dt>Description:</dt>
-          <dd>AES-CMAC with 256-bit key and 64-bit tag</dd>
+          <dd>AES-CMAC with 256-bit key and 96-bit tag</dd>
           <dt>Capabilities:</dt>
           <dd>[kty]</dd>
           <dt>Change controller:</dt>
@@ -302,6 +302,7 @@ Note to IANA: The requested COSE algorithm code points are in the positive less-
       </references>
       <references>
         <name>Informative References</name>
+        <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4494.xml"/>
         <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8126.xml"/>
         <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.9053.xml"/>
         <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.9864.xml"/>
