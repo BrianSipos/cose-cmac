@@ -54,10 +54,10 @@ class _CMAC(algorithms.CoseAlgorithm, ABC):
 
 
 @algorithms.CoseAlgorithm.register_attribute()
-class AESCMAC128_64(_CMAC):
+class AESCMAC128_96(_CMAC):
 
     identifier = 252
-    fullname = "AES_CMAC_128_64"
+    fullname = "AES_CMAC_128_96"
 
     cipher_cls = AES128
 
@@ -67,14 +67,14 @@ class AESCMAC128_64(_CMAC):
 
     @classmethod
     def get_tag_length(cls) -> int:
-        return 8
+        return 12
 
 
 @algorithms.CoseAlgorithm.register_attribute()
-class AESCMAC256_64(_CMAC):
+class AESCMAC256_96(_CMAC):
 
     identifier = 253
-    fullname = "AES_CMAC_256_64"
+    fullname = "AES_CMAC_256_96"
 
     cipher_cls = AES256
 
@@ -84,7 +84,7 @@ class AESCMAC256_64(_CMAC):
 
     @classmethod
     def get_tag_length(cls) -> int:
-        return 8
+        return 12
 
 
 @algorithms.CoseAlgorithm.register_attribute()
@@ -127,7 +127,7 @@ LOGGER = logging.getLogger(__name__)
 class TestExample(unittest.TestCase):
 
     def test_CMAC128(self):
-        for alg in {AESCMAC128_64, AESCMAC128_128}:
+        for alg in {AESCMAC128_96, AESCMAC128_128}:
             with self.subTest(str(alg)):
                 LOGGER.info('Using alg %s', alg.fullname)
                 # Augmented from RFC 9172 example
@@ -174,7 +174,7 @@ class TestExample(unittest.TestCase):
                 msg_back.verify_tag()
 
     def test_CMAC256(self):
-        for alg in {AESCMAC256_64, AESCMAC256_128}:
+        for alg in {AESCMAC256_96, AESCMAC256_128}:
             with self.subTest(str(alg)):
                 LOGGER.info('Using alg %s', alg.fullname)
                 # Augmented from RFC 9172 example
